@@ -59,6 +59,10 @@ int main(){
 	
 	sort(v.begin(),v.end());
 	
+	for(int i=0;i<v.size();i++){
+		cout << v[i].node[0] << " " << v[i].node[1] << " " << v[i].distance << endl;
+	}
+	
 	int set[n];
 	for(int i=0;i<n;i++) set[i] = i;
 	
