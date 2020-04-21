@@ -49,13 +49,12 @@ int main(){
 			parent[startPoint_parent] = destination_parent; // union();
 			answer += cost; // cost
 		}
-		
-		for(int j=0;j<n;j++){
-			cout << parent[j] << " ";
-		}
-		cout << endl;
 	}
 	
-	cout << answer << endl;
+	for(int i=0;i<n;i++) cout << i << " ";
+	cout << " 정점 번호입니다.\n";
+	for(int i=0;i<n;i++) cout << parent[i] << " ";
+	cout << " 정점 값입니다.\n";
+	cout << "모든 노드를 연결할 때 요구되는 가장 작은 비용은 "<<answer << " 입니다.\n";
 	
 }
