@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <queue>
 using namespace std;
-
+ 
 queue<int> q;
 
 void init_set(int *arr, int n){
