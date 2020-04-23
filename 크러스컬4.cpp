@@ -70,11 +70,10 @@ int main(){
 		if(a_parent != b_parent) unioon(a_parent, b_parent, parent, &answer, cost);
 	}
 	
-	cout << answer << endl;
-	
-	for(int i=0;i<n;i++){
-		cout << parent[i] << " ";
-	}
-	cout << endl;
-	
+
+	for(int i=0;i<n;i++) cout << i << " ";
+	cout << " 정점 번호입니다.\n";
+	for(int i=0;i<n;i++) cout << parent[i] << " ";
+	cout << " 정점 값입니다.\n";
+	cout << "모든 노드를 연결할 때 요구되는 가장 작은 비용은 "<<answer << " 입니다.\n";
 }
