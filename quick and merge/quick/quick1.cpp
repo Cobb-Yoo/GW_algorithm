@@ -11,10 +11,14 @@ int partition(vector<int> &v, int low, int high){
 	for(int i=low+1;i<=high;i++){
 		if(v[i] < v[low]){
 			j++;
-			v[i] ^= v[j] ^= v[i] ^= v[j];
+			int tmp = v[i];
+			v[i] = v[j];
+			v[j] = tmp;
 		}
 	}
-	v[low] ^= v[j] ^= v[low] ^= v[j];
+	int tmp = v[low];
+	v[low] = v[j];
+	v[j] = tmp;
 	
 	return j;
 }
@@ -53,16 +57,16 @@ int main(){
 	// 지금 소스에서는 피벗의 값을 맨 왼쪽으로 고정함.
 	// 배열의 요소의 갯수가 임계값 보다 작은 경우도 생각하지 않음. 
 	
-	cout << " 정렬 전 입니다.\n";
-	for(int i=0;i<howManyNumber;i++) cout << v[i] << " ";
-	cout << endl;
+	//cout << " 정렬 전 입니다.\n";
+	//for(int i=0;i<howManyNumber;i++) cout << v[i] << " ";
+	//cout << endl;
 	float s = clock();
-	quicksort(v,0,howManyNumber);
+	quicksort(v,0,howManyNumber-1);
 	float f = clock();
 	
-	cout << " 정렬 후 입니다.\n";
-	for(int i=0;i<howManyNumber;i++) cout << v[i] << " ";
-	cout << endl;
+	//cout << " 정렬 후 입니다.\n";
+	//for(int i=0;i<howManyNumber;i++) cout << v[i] << " ";
+	//cout << endl;
 	
 	cout << (float)(f-s)/CLOCKS_PER_SEC << "초 걸렸습니다. "<< endl;
 }
