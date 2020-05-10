@@ -4,6 +4,8 @@
 #include <cstdlib>
 using namespace std;
 
+const int MAX = 100000;
+
 void merge(vector<int> &v, int low, int middle, int high){
 	int n1=low, n2=middle+1, s = low;
 	int sorted[MAX];
@@ -18,11 +20,7 @@ void merge(vector<int> &v, int low, int middle, int high){
 	for(int i=low;i<=high;i++) v[i] = sorted[i];
 }
 
-void mergesort(vector<int> &v, int low, int high){
-	/*
-	3. 굳이 1개까지 나누지 않아도 될듯 →2~3개까지 나누면 될듯. 
-	*/
-	
+void mergesort(vector<int> &v, int low, int high){	
 	if(low < high){
 		// 혹시나 (high+low) 에서 오버플로우가 발생할 수 있기 때문에
 		//같은 연산이나 마찬가지인 연산을 채택 
@@ -43,8 +41,8 @@ int main(){
 	for(int i=0;i<n;i++) v[i] = i+1;
 	
 	for(int i=0;i<1000;i++){
-		int x = rand() % n + 1;
-		int y = rand() % n + 1;
+		int x = rand() % n;
+		int y = rand() % n;
 		
 		if(x != y){
 			int tmp = v[x];
@@ -54,11 +52,8 @@ int main(){
 	}
 	
 	float s = clock();
-	vector<int> result = mergesort(v,0,n-1);
+	mergesort(v,0,n-1);
 	float f = clock();
 	
-	for(int i=0;i<n;i++) result[i] << " ";
-	cout << endl;
-	
-	cout << (f-s) << endl;
+	cout << float(f-s)/CLOCKS_PER_SEC << endl;
 }
