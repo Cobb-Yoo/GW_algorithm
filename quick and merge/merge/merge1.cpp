@@ -4,23 +4,33 @@
 #include <cstdlib>
 using namespace std;
 
-vector<int> mergesort(vector<int> &v, int low, int high){
+void merge(vector<int> &v, int low, int middle, int high){
+	int n1=low, n2=middle+1, s = low;
+	int sorted[MAX];
+	
+	while(n1 <= middle && n2 <= high){
+		if(v[n1] < v[n2]) sorted[s++] = v[n1++];
+		else sorted[s++] = v[n2++];
+	}
+	if(n1 > middle) while(n2 <= high) sorted[s++] = v[n2++];
+	else while(n1 <= middle) sorted[s++] = v[n1++];
+	
+	for(int i=low;i<=high;i++) v[i] = sorted[i];
+}
+
+void mergesort(vector<int> &v, int low, int high){
 	/*
-	1. 마지막 까지 분열하고 재결합하는 방법 
-	2. 어떤 기준으로 분열을 시킬 것인가 →middle
 	3. 굳이 1개까지 나누지 않아도 될듯 →2~3개까지 나누면 될듯. 
 	*/
-	vector<int> c = v;
-	// (high+low)/2는 오버플로우가 발생할 수 있기 때문에.
-	// 연산의 결과가 동일한 low + (high - low) / 2을 채택. 
-	int middle = low + (high - low) / 2; 
-	if(low < high){
-		vector<int> a = mergesort();
-		vector<int> b = mergesort();
-		c = merge(a,b);
-	}
 	
-	return v;
+	if(low < high){
+		// 혹시나 (high+low) 에서 오버플로우가 발생할 수 있기 때문에
+		//같은 연산이나 마찬가지인 연산을 채택 
+		int middle = low + (high - low) / 2;
+		mergesort(v, low, middle);
+		mergesort(v, middle+1, high);
+		merge(v, low, middle, high);
+	}
 }
 
 int main(){
