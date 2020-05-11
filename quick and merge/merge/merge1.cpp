@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 const int MAX = 100000;
+int cnt=0;
 
 void merge(vector<int> &v, int low, int middle, int high){
 	int n1=low, n2=middle+1, s = low;
@@ -21,6 +22,7 @@ void merge(vector<int> &v, int low, int middle, int high){
 }
 
 void mergesort(vector<int> &v, int low, int high){	
+	cnt++;
 	if(low < high){
 		// 혹시나 (high+low) 에서 오버플로우가 발생할 수 있기 때문에
 		//같은 연산이나 마찬가지인 연산을 채택 
@@ -35,12 +37,13 @@ int main(){
 	int n;
 	cin >> n;
 	vector<int> v(n);
-	
+	int tmp=0;
 	srand((unsigned int)time(NULL));
 	
 	for(int i=0;i<n;i++) v[i] = i+1;
 	
-	for(int i=0;i<1000;i++){
+	for(int i=0;i<100000;i++){
+		tmp++;
 		int x = rand() % n;
 		int y = rand() % n;
 		
@@ -55,5 +58,9 @@ int main(){
 	mergesort(v,0,n-1);
 	float f = clock();
 	
-	cout << float(f-s)/CLOCKS_PER_SEC << endl;
+	//for(int i=0;i<n;i++) cout << v[i] << " ";
+	cout << endl;	
+	cout << cnt << " " << tmp << endl;
+	
+	cout << (float)(f-s)/CLOCKS_PER_SEC << "초 걸렸습니다. "<< endl;
 }
