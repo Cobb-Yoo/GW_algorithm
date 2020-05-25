@@ -88,16 +88,13 @@ int main(){
 	
 	float s1 = clock();
 	quicksort(q,0,howManyNumber-1);
-	cout << "test1\n";
 	float f1 = clock();
 	
 	
 	float s2 = clock();
 	mergesort(m,0,howManyNumber-1);
-	cout << "test2\n";
 	float f2 = clock();
 
-	cout << "test3\n";
 	cout << (float)(f1-s1)/CLOCKS_PER_SEC << "초 걸렸습니다. "<< endl;
 	cout << (float)(f2-s2)/CLOCKS_PER_SEC << "초 걸렸습니다. "<< endl;
 }
