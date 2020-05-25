@@ -4,24 +4,24 @@
 #include <ctime>
 using namespace std;
 
-vector<int> v;
+vector<long long> v;
 
-void swap(int *a, int *b) {
-	int tmp = *a;
+void swap(long long *a, long long *b) {
+	long long tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
 
-int partition(int left, int right) {
-	int pivot_index = rand() % (right + 1 - left) + left;
-	int pivot_value = v[pivot_index];
+long long partition(long long left, long long right) {
+	long long pivot_index = rand() % (right + 1 - left) + left;
+	long long pivot_value = v[pivot_index];
 
 	swap(&v[pivot_index], &v[right]);
 
 	// store_index를 기준으로
 	// 왼쪽에 pivot_value보다 작은 값들 위치시킴
-	int store_index = left;
-	for (int i = left; i < right; i++) {
+	long long store_index = left;
+	for (long long i = left; i < right; i++) {
 		if (v[i] < pivot_value) {
 			swap(&v[i], &v[store_index]);
 			store_index += 1;
@@ -34,21 +34,21 @@ int partition(int left, int right) {
 
 }
 
-void quicksort(int low, int high){
-	int pivot = partition(low, high);
+void quicksort(long long low, long long high){
+	long long pivot = partition(low, high);
 	if(low < pivot-1) quicksort(low,pivot-1);
 	if(pivot+1 < high) quicksort(pivot+1,high);
 }
 
 int main(){
 	srand((unsigned)time(NULL));
-	int n; // 배열의 크기
+	long long n; // 배열의 크기
 	cout << "배열의 크기를 설정하세요. : ";
 	cin >>  n;
 	
-	for(int i=0;i<n;i++) v.push_back(i+1);
+	for(long long i=0;i<n;i++) v.push_back(i+1);
 	
-	for(int i=0;i<100000;i++){ // 시간은 걸리더라도 최대한 잘 섞이도록 많이 섞음. 
+	for(int i=0;i<10000000;i++){ // 시간은 걸리더라도 최대한 잘 섞이도록 많이 섞음. 
 		int x = rand() % n;
 		int y = rand() % n;
 		
