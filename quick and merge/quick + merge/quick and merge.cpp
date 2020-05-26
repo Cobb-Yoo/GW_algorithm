@@ -4,8 +4,6 @@
 #include <cstdlib>
 using namespace std;
 
-int MAX= 10000001;
-
 int partition(vector<int> &v, int low, int high){
 	int j = low;
 	for(int i=low+1;i<=high;i++){
