@@ -6,7 +6,8 @@
 using namespace std;
 
 vector<ll> quick_v, merge_v;
-const int sampling = 100;
+const int sampling = 1;
+const int index = 100;
 
 void merge(ll low, ll middle, ll high){ // 두 배열을 병합하는 함수
 	ll n1=low, n2=middle+1, cnt = 0;
@@ -38,6 +39,17 @@ void swap(ll &a, ll &b) { // swap함수를 사용하는 곳에서 편하게 코드를 짜기 위해�
 	b = tmp;
 }
 
+void insert_sort(ll x, ll y){
+	ll j;
+	for(ll i= x;i <= y;i++){
+		j = i;
+		while(j > 0 && quick_v[j-1] > quick_v[j]){
+			swap(quick_v[j], quick_v[j-1]);
+			j--;
+		}
+	}
+}
+
 ll partition(ll left, ll right) { // pivot의 값을 return하는 함수
 	ll pivot_index = rand() % (right + 1 - left) + left; //함수의 범위 중 하나를 선택
 	ll pivot_value = quick_v[pivot_index]; // 이 값보다 작은 값들을 왼쪽에 위치 시킴
@@ -59,8 +71,14 @@ ll partition(ll left, ll right) { // pivot의 값을 return하는 함수
 
 void quicksort(ll low, ll high){
 	ll pivot = partition(low, high); // pivot을 선택하는 함수
-	if(low < pivot-1) quicksort(low,pivot-1); //pivot을 기준으로 왼쪽 값들을 정렬
-	if(pivot+1 < high) quicksort(pivot+1,high); //pivot을 기준으로 오른쪽 값들을 정렬
+	if(low < pivot-1) {
+		if(pivot-low <= index) insert_sort(low, pivot-1);
+		else quicksort(low,pivot-1); //pivot을 기준으로 왼쪽 값들을 정렬
+	}
+	if(pivot+1 < high) {
+		if(high - pivot <= index) insert_sort(pivot+1,high);
+		else quicksort(pivot+1,high); //pivot을 기준으로 오른쪽 값들을 정렬
+	}
 }
 
 int main(){
