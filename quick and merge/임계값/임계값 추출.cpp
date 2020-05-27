@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib> // rand()
 #include <ctime>
+#include <algorithm>
 #define ll long long
 using namespace std;
 
@@ -54,6 +55,8 @@ void quicksort(ll low, ll high){
 }
 
 int main(){
+	ll min_index = 1000;
+	ll max_index = 0;
 	srand((unsigned)time(NULL));
 	vector<int> index;
 	
@@ -82,7 +85,9 @@ int main(){
 			float f2 = clock();
 	
 			if((float)(f-s)/CLOCKS_PER_SEC > (float)(f2-s2)/CLOCKS_PER_SEC) {
-				index.push_back(n);
+				index.push_back(n-1);
+				max_index = max(n-1, max_index);
+				min_index = min(n-1, min_index);
 				break;
 			}
 		}
@@ -91,4 +96,5 @@ int main(){
 	ll tmp = 0;
 	for(int i=0;i<Test_case;i++) tmp += index[i];
 	cout << (float)tmp / Test_case << endl;
+	cout << min_index << " " << max_index << endl;
 }
