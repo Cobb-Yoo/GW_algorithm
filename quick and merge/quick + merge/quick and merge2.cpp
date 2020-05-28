@@ -6,7 +6,7 @@
 using namespace std;
 
 vector<ll> quick_v, merge_v;
-const int sampling = 1;
+const int sampling = 100;
 const int index = 100;
 
 void merge(ll low, ll middle, ll high){ // 두 배열을 병합하는 함수
@@ -26,7 +26,9 @@ void merge(ll low, ll middle, ll high){ // 두 배열을 병합하는 함수
 
 void mergesort(ll low, ll high){ 
 	if(low < high){
-		ll middle = low + (high - low) / 2; // (low+high)/2와 동일한 값이지만 각 값들이 충분히 큼, 자료형이 담을 수 있는 값보다 커질 수 있기 때문에 그것을 방지하고자 하는 연산.
+		// (low+high)/2와 동일한 값이지만 각 값들이 충분히 큼, 자료형이 담을 수 있는 값보다 커질 수 있기 때문에 그것을 방지하고자 하는 연산.
+		ll middle = low + (high - low) / 2; 
+		
 		mergesort(low, middle);
 		mergesort(middle+1, high);
 		merge(low, middle, high);
@@ -89,18 +91,14 @@ int main(){
 		vector<float> m_sec; // mergesort로 정렬되는 시간을 저장하는 vector
 		
 		for(int N=0;N<sampling;N++){
-			ll n = T; // 배열의 크기
+			ll len = T; // 배열의 크기
 			vector<ll> v;
 	
-			for(long long i=0;i<n;i++) v.push_back(i+1); // 배열의 초기 값.
+			for(long long i=0;i<len;i++) v.push_back(i+1); // 배열의 초기 값.
 	
-			ll len = n * 100; // 배열을 충분히 섞게 하기 위한 값.
-	
-			for(ll i=0;i<=len;i++){ // 시간은 걸리더라도 최대한 잘 섞이도록 많이 섞음. 
-				int x = rand() % n;
-				int y = rand() % n;
-		
-				swap(v[x], v[y]);
+			for(ll i=0;i<len;i++){ // 시간은 걸리더라도 최대한 잘 섞이도록 많이 섞음. 
+				int x = rand() % (len - i) + i;
+				swap(v[x], v[i]);
 			}
 
 			// 동일한 배열을 정렬할 때 걸리는 시간을 측정하기 위하기 때문에
@@ -109,11 +107,11 @@ int main(){
 			merge_v = quick_v = v; 
 		
 			float s1 = clock();
-			quicksort(0,n-1);
+			quicksort(0,len-1);
 			float f1 = clock();
 		
 			float s2 = clock();
-			mergesort(0,n-1);
+			mergesort(0,len-1);
 			float f2 = clock();
 	
 			q_sec.push_back((f1-s1)/CLOCKS_PER_SEC); // 결과를 vector에 저장
@@ -130,7 +128,8 @@ int main(){
 		m_time /= sampling;
 		
 		// cout으로 출력할 경우 더 낮은 소수점을 출력하는 것보다 printf가 더 간단함.
-		printf("%d\tQuicksort : %.10f",T,q_time);
+		if(T==10000000) printf("%d\tQuicksort : %.10f",T,q_time);
+		else printf("%d\t\tQuicksort : %.10f",T,q_time);
 		if(q_time > m_time) cout << "\t>\t";
 		else if(q_time < m_time) cout << "\t<\t";
 		else cout << "\t==\t";

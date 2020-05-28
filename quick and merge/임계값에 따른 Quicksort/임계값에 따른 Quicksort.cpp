@@ -59,33 +59,27 @@ void quicksort(vector<ll> &quick_v, ll low, ll high){
 int main(){
 	srand((unsigned)time(NULL)); // rand를 불규칙적으로 사용하기 위함.
 	
-	ll len = 100000; // 배열의 크기
+	ll len = 10000000; // 배열의 크기
 	vector<ll> v;
 	
 	for(long long i=0;i<len;i++) v.push_back(i+1); // 배열의 초기 값.
 	
 	for(ll i=0;i<len;i++){ // 시간은 걸리더라도 최대한 잘 섞이도록 많이 섞음. 
 		ll x = rand() % (len-i) + i;
-			
 		swap(v[i], v[x]);
 	}
 
 	// 동일한 배열을 정렬할 때 걸리는 시간을 측정하기 위하기 때문에
 	// v값을 merge_v와 quick_v에 복사
 	
-	for(index = 1;index <= 100000;index*=10){
-		insert_v = quick_v = v; 
+	for(index = 1;index <= len;index*=10){
+		quick_v = v; 
 		
-		float s1 = clock();
+		float s = clock();
 		quicksort(quick_v,0,len-1);
-		float f1 = clock();
-		
-		float s2 = clock();
-		insert_sort(insert_v,0,len-1);
-		float f2 = clock();
+		float f = clock();
 				
-		cout << (f1-s1)/CLOCKS_PER_SEC << "\t";
-		cout << (f2-s2)/CLOCKS_PER_SEC << "\n";
+		cout << (f-s)/CLOCKS_PER_SEC << "\t";
 	}
 	
 	cout << endl;		
