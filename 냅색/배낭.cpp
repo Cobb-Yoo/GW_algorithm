@@ -45,20 +45,75 @@ int ks_DP1(int n, int M) {
 			}
 			cout << K[i][j] << " ";
 		}
-		cout << endl;
+		cout#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+
+const int MAX = 100;
+
+int dp[MAX][MAX];
+
+int w[] = {0,3,5,4};
+int p[] = {0,1,4,6};
+int n=3, m=8;
+
+void init(){
+	int tmp;
+	//w.push_back(0);
+	//p.push_back(0);
+	for(int i=0;i<n;i++){
+		cin >> tmp;
+	//	w.push_back(tmp);
+	}
+	for(int i=0;i<n;i++){
+		cin >> tmp;
+	//	p.push_back(tmp);
+	}
+}
+
+void dp_1(){
+	memset(dp,0,sizeof(dp));
+	
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			if(j < w[i]) dp[i][j] = dp[i-1][j];
+			else dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]]+p[i]);
+		}
+	}
+	
+	cout << dp[n][m] << endl;
+	cout << endl;
+}
+
+int dp_2_f(int a, int b){
+	if(a == 1){
+		if(b >= w[1]) return p[1];
+		else return 1-p[2]; // 까리하지 않음.... 
+	}
+	return max(dp_2_f(a-1, b), dp_2_f(a-1,b-w[a]) + p[a]);
+}
+
+void dp_2(){
+	memset(dp,0,sizeof(dp));
+	cout << dp_2_f(n,m) << endl;
+}
+
+int main(){
+	//cin >> n >> m;
+	
+	//init();
+	
+	dp_1(); // O(nM)
+	dp_2(); // seta(2^n)
+	//dp_3();
+} << endl;
 	}
 	return K[n][M];
 }
 
 int ks_DP2(int n, int M) {
-	int i, w;
-	int **K = new int*[7]; //동적배열 생성
-	for (int i = 0; i <= 6; i++) {
-		K[i] = new int[15];
-	}	cout << "동적계획법2" << endl;
-	for (w = 0; w <= M; w++) K[0][w] = 0; //무게가 0일때 0으로 초기화
-	for (i = 0; i <= n; i++) K[i][0] = 0; //아무것도 안넣었을때 0으로 초기화
-	i = n, w = M;
 	//핵심코드
 	while (K[n][M]<0) { //원하는 물건의 갯수와 무게의 값이 의미있는 값일때 종료 쓰레기값이면 반복
 		if (i >= 0 && w >= 0) {
@@ -82,15 +137,7 @@ int ks_DP2(int n, int M) {
 			}
 		}
 	}
-	for (int i = 0; i <= n; i++) { //출력문
-		for (int j = 0; j <= M; j++) {
-			if (K[i][j] < 0) {
-				K[i][j] = 0;
-			}
-			cout << K[i][j] << " ";
-		}
-		cout << endl;
-	}
+	
 	return K[n][M];
 }
 
