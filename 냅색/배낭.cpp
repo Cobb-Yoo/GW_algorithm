@@ -73,23 +73,41 @@ void dp_3(){
 	dp_3_tmp_w.push_back(0);
 	dp_3_tmp_p.push_back(0);
 	
-	for(int i=0;i<n;i++){
+	for(int i=1;i<=n;i++){
+		cout << "w : size = " << dp_3_tmp_w.size();
+		cout << " || p : size = " << dp_3_tmp_p.size() << endl;
 		tmp.clear();
+		
+		//for(int j=0;j<dp_3_tmp_w.size();j++){
+		//	cout << dp_3_tmp_w[j] << " ";
+		//}
+		//cout << endl;
 		
 		for(int j=0;j<dp_3_tmp_w.size();j++){ // 평행이동 함. 
 			tmp.push_back(dp_3_tmp_w[j] + float_w[i]);
 		}
+		
 		int cnt = 0;
 		for(;;){ // 기존의 값에 삽입할 정수 부분을 찾기. 
-			if(tmp[0] > dp_3_tmp_w[cnt]) cnt++;
+			if(tmp[0] > dp_3_tmp_w[cnt]) {
+				cnt++;
+				if(cnt > dp_3_tmp_w.size()) break;
+			}
 			else break;
 		}
-		int len = dp_3_tmp_w.size()+cnt;
+		
+		int len = tmp.size()+cnt+1;
 		
 		for(int j = cnt;j<len;j++){
 			if(cnt > dp_3_tmp_w.size()) dp_3_tmp_w.push_back(tmp[j-cnt]);
 			else dp_3_tmp_w[j] = tmp[j-cnt];
 		}
+		
+		for(int j=0;j<dp_3_tmp_w.size();j++){
+			cout << dp_3_tmp_w[j] << " ";
+		}
+		cout << endl;
+		
 		//=======================================w축 완료 
 		tmp.clear();
 		for(int j=0;j<dp_3_tmp_p.size();j++){ // 평행이동 함. 
