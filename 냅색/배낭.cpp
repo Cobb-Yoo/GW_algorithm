@@ -6,8 +6,9 @@ using namespace std;
 
 vector<int> w;
 vector<int> p;
-vector<float> fw;
-vector<float> fp;
+vector<float> float_w;
+vector<float> float_p;
+
 int n,m;
 
 int dp[100][100];
@@ -16,18 +17,18 @@ float dp3[100];
 void init(){
 	w.push_back(0);
 	p.push_back(0);
-	fw.push_back(0);
-	fp.push_back(0);
+	float_w.push_back(0);
+	float_p.push_back(0);
 	float tmp;
 	for(int i=0;i<n;i++){
 		cin >> tmp;
 		w.push_back(tmp);
-		fw.push_back(tmp);
+		float_w.push_back(tmp);
 	}
 	for(int i=0;i<n;i++){
 		cin >> tmp;
 		p.push_back(tmp);
-		fp.push_back(tmp);
+		float_p.push_back(tmp);
 	}
 }
 
@@ -64,56 +65,59 @@ void dp_2(){
 }
 
 void dp_3(){
-	//값은 fw와 fp에 각각 저장되어있음.
-	 
-	vector<float> tmp; //축이동의 값을 저장할 vector
-	vector<float> w3; //저장될 w의 값 
-	vector<float> p3; //저장될 p의 값 
+	vector<float> dp_3_tmp_w;
+	vector<float> dp_3_tmp_p;
 	
-	w3.push_back(0);
-	p3.push_back(0);
+	vector<float> tmp;
 	
-	for(int i=0;i<n;i++){ //갯수에 맞춰서 반복 
+	dp_3_tmp_w.push_back(0);
+	dp_3_tmp_p.push_back(0);
+	
+	for(int i=0;i<n;i++){
 		tmp.clear();
-		float changePoint = w3[0]+fw[i];
 		
-		for(int j=0;j<w3.size();j++){// 축이동 값을 tmp에 일단 저★장★ 
-			tmp.push_back(w3[j]+fw[i]);
+		for(int j=0;j<dp_3_tmp_w.size();j++){ // 평행이동 함. 
+			tmp.push_back(dp_3_tmp_w[j] + float_w[i]);
 		}
-		
-		for(int t=0;;t++){
-			if(w3[t] < changePoint) {
-				// w3가 vector이기 때문에 w3[t++]보다는 push_back으로 하는게 맞음.
-				// 지금 제일 문제 되는 부분은 p3나 w3가 float값이기 때문에 배열의 값으로 표현 못하는 한계를 해결해야함.
-				// 줸장... 
-				for(int j=0;j<tmp.size();j++){ 
-					w3[t++] = tmp[j];
-				}
-				break;
-			}
+		int cnt = 0;
+		for(;;){ // 기존의 값에 삽입할 정수 부분을 찾기. 
+			if(tmp[0] > dp_3_tmp_w[cnt]) cnt++;
+			else break;
 		}
+		int len = dp_3_tmp_w.size()+cnt;
 		
+		for(int j = cnt;j<len;j++){
+			if(cnt > dp_3_tmp_w.size()) dp_3_tmp_w.push_back(tmp[j-cnt]);
+			else dp_3_tmp_w[j] = tmp[j-cnt];
+		}
+		//=======================================w축 완료 
 		tmp.clear();
-		for(int j=0;j<p3.size();j++){
-			tmp.push_back(p3[j]+fp[i]);
+		for(int j=0;j<dp_3_tmp_p.size();j++){ // 평행이동 함. 
+			tmp.push_back(dp_3_tmp_p[j] + float_p[i]);
 		}
 		
-		for(int t=0;;t++){
-			if(p3[t] < changePoint){
-				for(int j=0;j<tmp.size();j++){
-					p3[t++] = tmp[j];
-				}
-				break;
-			}
+		len = dp_3_tmp_p.size()+cnt;
+		for(int j = cnt;j<len;j++){
+			if(cnt > dp_3_tmp_p.size()) dp_3_tmp_p.push_back(tmp[j-cnt]);
+			else dp_3_tmp_p[j] = max(dp_3_tmp_p[j], tmp[j-cnt]);
 		}
-		// 이동한 값을 기존의 값에 대입해야하는데
-		// 동일한 무게(w)에서는 더 큰 가치를 저장해야만 이 알고리즘이 성립이 가능함.
-		 
 	}
-	//축이동
-	//비교
-	//합치기 (실수이기 때문에 곤란한 부분이 없진않음...) 
 	
+	float dp3_MAX = 0;
+	for(int i=1;i<dp_3_tmp_w.size();i++){
+		if(dp_3_tmp_w[i] <= m) dp3_MAX = max(dp3_MAX, dp_3_tmp_p[i]);
+	}
+	
+	cout << dp3_MAX << endl;
+	
+	for(int i=0;i<dp_3_tmp_w.size();i++){
+		cout << dp_3_tmp_w[i] << " ";
+	}
+	cout << endl;
+	for(int i=0;i<dp_3_tmp_p.size();i++){
+		cout << dp_3_tmp_p[i] << " ";
+	}
+	cout << endl;
 }
 
 int main(){	
