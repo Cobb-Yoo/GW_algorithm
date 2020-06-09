@@ -9,7 +9,9 @@ vector<int> p;
 vector<float> float_w;
 vector<float> float_p;
 
-int n,m; 
+int n,m;
+
+
 
 int dp[100][100];
 float dp3[100];
