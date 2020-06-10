@@ -11,8 +11,6 @@ vector<float> float_p;
 
 int n,m;
 
-
-
 int dp[100][100];
 float dp3[100];
 
@@ -75,9 +73,7 @@ void dp_3(){
 	dp_3_tmp_w.push_back(0);
 	dp_3_tmp_p.push_back(0);
 	
-	for(int i=1;i<=n;i++){
-		cout << "w : size = " << dp_3_tmp_w.size();
-		cout << " || p : size = " << dp_3_tmp_p.size() << endl;
+	for(int i=1;i<=n;i++){;
 		tmp.clear();
 		
 		//for(int j=0;j<dp_3_tmp_w.size();j++){
@@ -89,26 +85,40 @@ void dp_3(){
 			tmp.push_back(dp_3_tmp_w[j] + float_w[i]);
 		}
 		
+		cout << "tmp_w : ";
+		for(int j=0;j<tmp.size();j++){
+			cout << tmp[j] << " ";
+		}
+		cout << endl;
+		
 		int cnt = 0;
 		for(;;){ // 기존의 값에 삽입할 정수 부분을 찾기. 
-			if(tmp[0] > dp_3_tmp_w[cnt]) {
+			if(tmp[0] >= dp_3_tmp_w[cnt]) {
 				cnt++;
-				if(cnt > dp_3_tmp_w.size()) break;
+				if(cnt >= dp_3_tmp_w.size()) break;
 			}
 			else break;
 		}
 		
+		cout << "cnt : " << cnt << endl;
 		int len = tmp.size()+cnt+1;
 		
-		for(int j = cnt;j<len;j++){
-			if(cnt > dp_3_tmp_w.size()) dp_3_tmp_w.push_back(tmp[j-cnt]);
-			else dp_3_tmp_w[j] = tmp[j-cnt];
-		}
-		
+		cout << "dp_3_tmp_w : ";
 		for(int j=0;j<dp_3_tmp_w.size();j++){
 			cout << dp_3_tmp_w[j] << " ";
 		}
 		cout << endl;
+		
+		for(int j = cnt;j<len;j++){ //두 배열을 합치기!!!!! 제발 
+			if(j >= dp_3_tmp_w.size()-1) dp_3_tmp_w.push_back(tmp[j-cnt]);
+			else dp_3_tmp_w[j] = tmp[j-cnt];
+		}
+		
+		cout << "dp_3_tmp_w : ";
+		for(int j=0;j<dp_3_tmp_w.size();j++){
+			cout << dp_3_tmp_w[j] << " ";
+		}
+		cout << endl << endl;
 		
 		//=======================================w축 완료 
 		tmp.clear();
