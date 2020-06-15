@@ -8,7 +8,6 @@ vector<int> w;
 vector<int> p;
 vector<float> float_w;
 vector<float> float_p;
-
 int n,m;
 
 int dp[100][100];
@@ -17,8 +16,6 @@ float dp3[100];
 void init(){
 	w.push_back(0);
 	p.push_back(0);
-	float_w.push_back(0);
-	float_p.push_back(0);
 	float tmp;
 	for(int i=0;i<n;i++){
 		cin >> tmp;
@@ -64,90 +61,46 @@ void dp_2(){
 	cout << dp_2_f(n,m) << endl;
 }
 
+bool cmp(pair<float, float> a, pair<float, float> b){
+	if(a.first == b.first) return a.second < b.second;
+	return a.first < b.first;
+}
+
 void dp_3(){
-	vector<float> dp_3_tmp_w;
-	vector<float> dp_3_tmp_p;
+	vector<pair<float, float>> s;
+	s.push_back({0,0});
 	
-	vector<float> tmp;
-	
-	dp_3_tmp_w.push_back(0);
-	dp_3_tmp_p.push_back(0);
-	
-	for(int i=1;i<=n;i++){;
-		tmp.clear();
+	for(int T=0;T<n;T++){
+		vector<pair<float, float>> sp;
+		vector<pair<float, float>> tmp;
 		
-		//for(int j=0;j<dp_3_tmp_w.size();j++){
-		//	cout << dp_3_tmp_w[j] << " ";
-		//}
-		//cout << endl;
+		int len = s.size();
+		for(int i=0;i<len;i++){ //평행이동. 
+			sp.push_back({s[i].first + float_w[T], s[i].second + float_p[T]});
+		}		
 		
-		for(int j=0;j<dp_3_tmp_w.size();j++){ // 평행이동 함. 
-			tmp.push_back(dp_3_tmp_w[j] + float_w[i]);
+		int a,b;
+		for(a=0,b=0;a < s.size();){
+			if(s[a].first >= sp[b].first && s[a].second <= sp[b].second) a++;
+			else tmp.push_back(s[a++]);
 		}
 		
-		cout << "tmp_w : ";
-		for(int j=0;j<tmp.size();j++){
-			cout << tmp[j] << " ";
-		}
-		cout << endl;
+		while(a < s.size()) tmp.push_back(s[a++]);
+		while(b < sp.size()) tmp.push_back(sp[b++]);
 		
-		int cnt = 0;
-		for(;;){ // 기존의 값에 삽입할 정수 부분을 찾기. 
-			if(tmp[0] >= dp_3_tmp_w[cnt]) {
-				cnt++;
-				if(cnt >= dp_3_tmp_w.size()) break;
-			}
-			else break;
-		}
-		
-		cout << "cnt : " << cnt << endl;
-		int len = tmp.size()+cnt+1;
-		
-		cout << "dp_3_tmp_w : ";
-		for(int j=0;j<dp_3_tmp_w.size();j++){
-			cout << dp_3_tmp_w[j] << " ";
-		}
-		cout << endl;
-		
-		for(int j = cnt;j<len;j++){ //두 배열을 합치기!!!!! 제발 
-			if(j >= dp_3_tmp_w.size()-1) dp_3_tmp_w.push_back(tmp[j-cnt]);
-			else dp_3_tmp_w[j] = tmp[j-cnt];
-		}
-		
-		cout << "dp_3_tmp_w : ";
-		for(int j=0;j<dp_3_tmp_w.size();j++){
-			cout << dp_3_tmp_w[j] << " ";
-		}
-		cout << endl << endl;
-		
-		//=======================================w축 완료 
-		tmp.clear();
-		for(int j=0;j<dp_3_tmp_p.size();j++){ // 평행이동 함. 
-			tmp.push_back(dp_3_tmp_p[j] + float_p[i]);
-		}
-		
-		len = dp_3_tmp_p.size()+cnt;
-		for(int j = cnt;j<len;j++){
-			if(cnt > dp_3_tmp_p.size()) dp_3_tmp_p.push_back(tmp[j-cnt]);
-			else dp_3_tmp_p[j] = max(dp_3_tmp_p[j], tmp[j-cnt]);
-		}
+		s = tmp;
+				
+		sort(s.begin(), s.end(), cmp);
 	}
 	
-	float dp3_MAX = 0;
-	for(int i=1;i<dp_3_tmp_w.size();i++){
-		if(dp_3_tmp_w[i] <= m) dp3_MAX = max(dp3_MAX, dp_3_tmp_p[i]);
+	int len = s.size();
+	float answer = 0;
+	for(int i=0;i<len;i++){
+		if(s[i].first > m) break;
+		answer = max(s[i].second, answer);
 	}
 	
-	cout << dp3_MAX << endl;
-	
-	for(int i=0;i<dp_3_tmp_w.size();i++){
-		cout << dp_3_tmp_w[i] << " ";
-	}
-	cout << endl;
-	for(int i=0;i<dp_3_tmp_p.size();i++){
-		cout << dp_3_tmp_p[i] << " ";
-	}
-	cout << endl;
+	cout << answer << endl;
 }
 
 int main(){	
