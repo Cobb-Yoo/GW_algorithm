@@ -30,6 +30,7 @@ void init(){
 }
 
 void dp_1(){
+	cout << "dp_1" << endl;
 	memset(dp,0,sizeof(dp));
 	
 	for(int i=1;i<=n;i++){
@@ -39,7 +40,14 @@ void dp_1(){
 		}
 	}
 	
-	cout << dp[n][m] << endl;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout << dp[i][j] << " ";
+		}
+		cout << endl;
+	}
+	
+	cout << "dp_1의 최대효율 = " << dp[n][m] << endl;
 }
 
 int dp_2_f(int a, int b){
@@ -57,8 +65,19 @@ int dp_2_f(int a, int b){
 }
 
 void dp_2(){
+	cout << "dp_2" << endl;
 	memset(dp,0,sizeof(dp));
-	cout << dp_2_f(n,m) << endl;
+	
+	int answer = dp_2_f(n,m);
+	
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout << dp[i][j] << " ";
+		}
+		cout << endl;
+	}
+		
+	cout << "dp_2의 최대효율 = " << answer << endl;
 }
 
 bool cmp(pair<float, float> a, pair<float, float> b){
@@ -99,6 +118,24 @@ void dp_3(){
 		if(s[i].first > m) break;
 		answer = max(s[i].second, answer);
 	}
+	
+	vector<pair<float, float>> tmp;
+	for(int i=1;i<len;i++){
+		if(s[i].first != s[i-1].first){
+			if(i == len-1){
+				tmp.push_back({s[i-1].first,s[i-1].second});
+				tmp.push_back({s[i].first,s[i].second});
+			}
+			else tmp.push_back({s[i-1].first,s[i-1].second});
+		}
+	}
+	
+	s = tmp;
+	
+	for(int i=0;i<s.size();i++){
+		cout << s[i].first << " " << s[i].second << endl;
+	}
+	cout << endl;
 	
 	cout << answer << endl;
 }
